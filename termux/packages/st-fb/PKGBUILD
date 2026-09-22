@@ -1,0 +1,29 @@
+pkgname=st-fb
+pkgver=r7.bacf092
+pkgrel=1
+pkgdesc="A simple virtual terminal emulator for X - Fryed Version"
+url="https://github.com/fryedbiscuit/st"
+arch=('i686' 'x86_64' 'arm' 'armv7h' 'armv6h' 'aarch64')
+license=('MIT')
+# options=(zipman)
+depends=('libx11' 'libxinerama' 'libxft' 'freetype' 'ttf-hack-nerd' 'noto-fonts-emoji')
+makedepends=('git' 'make')
+provides=('st')
+conflicts=('st')
+source=(git+https://github.com/fryedbiscuit/st.git#branch=master)
+sha256sums=('SKIP')
+
+pkgver() {
+	printf "r%s.%s" "$(git rev-list --count HEAD)" "$(git rev-parse --short HEAD)"
+}
+
+build() {
+	cp ../config.h st/
+	cd st
+	make
+}
+
+package() {
+	cd st
+	make PREFIX="${PREFIX:-/usr}" DESTDIR="$pkgdir" install
+}

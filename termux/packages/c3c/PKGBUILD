@@ -1,0 +1,32 @@
+# Maintainer: Vitor Hugo Alves dos Santos
+
+pkgname=c3c
+pkgver=0.8.4
+pkgrel=1
+pkgdesc="Compiler for the C3 programming language (precompiled binary)"
+arch=('aarch64' 'x86_64')
+url="https://github.com/c3lang/c3c"
+license=('MIT')
+provides=('c3c')
+conflicts=('c3c')
+
+# makepkg automatically selects the correct array based on the $CARCH of the system
+source_aarch64=("https://github.com/c3lang/c3c/releases/download/v${pkgver}/c3-android-aarch64.tar.gz")
+sha256sums_aarch64=('12a215ce212b40f95cfc9b8d796a49e9cad7d0a5ad39ad78c590db61d3b3714c')
+
+source_x86_64=("https://github.com/c3lang/c3c/releases/download/v${pkgver}/c3-android-x86_64.tar.gz")
+sha256sums_x86_64=('d9730780d3a7eaf637be65a00445873d71aff6ff6da0781b321ab2ef2033bd0c')
+
+package() {
+    # Uses the Termux prefix if available in the environment, falling back to /usr
+    local _prefix="${PREFIX:-/usr}"
+    
+    install -d "${pkgdir}${_prefix}/opt/c3"
+    install -d "${pkgdir}${_prefix}/bin"
+    
+    # The tarball extracts a single 'c3' root directory containing the binary and stdlib
+    cp -a "${srcdir}/c3/"* "${pkgdir}${_prefix}/opt/c3/"
+    
+    chmod +x "${pkgdir}${_prefix}/opt/c3/c3c"
+    ln -s "${_prefix}/opt/c3/c3c" "${pkgdir}${_prefix}/opt/c3c"
+}

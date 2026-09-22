@@ -1,5 +1,5 @@
 pkgname=dwmstb
-pkgver=r5.e349919
+pkgver=r10.0e93129
 pkgrel=1
 pkgdesc="Bog standard status bar for dwm"
 url="https://github.com/fryedbiscuit/dwmstb"

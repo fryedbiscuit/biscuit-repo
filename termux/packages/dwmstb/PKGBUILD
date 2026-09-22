@@ -1,11 +1,11 @@
 pkgname=dwmstb
-pkgver=r3.be93140
+pkgver=r5.e349919
 pkgrel=1
 pkgdesc="Bog standard status bar for dwm"
 url="https://github.com/fryedbiscuit/dwmstb"
 arch=('i686' 'x86_64' 'arm' 'armv7h' 'armv6h' 'aarch64')
-depends=('libx11' 'pulseaudio' 'termux-api' 'noto-fonts-emoji')
-makedepends=('git' 'make')
+depends=('libx11' 'termux-api')
+makedepends=('c3c' 'git' 'make')
 source=(git+https://github.com/fryedbiscuit/dwmstb.git#branch=main)
 sha256sums=('SKIP')
 
@@ -15,10 +15,10 @@ pkgver() {
 
 build() {
 	cd dwmstb
-	make
+	c3c build termux
 }
 
 package() {
-	cd dwmstb
-	make DESTDIR=$pkgdir PREFIX="$PREFIX" install
+	install -d ${pkgdir}${PREFIX}/bin
+	install -m 755 dwmstb/build/dwmstb-termux ${pkgdir}${PREFIX}/bin/dwmstb
 }

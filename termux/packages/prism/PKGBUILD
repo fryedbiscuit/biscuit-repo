@@ -1,0 +1,27 @@
+pkgname=prism
+pkgver=r9.18b9e59
+pkgrel=1
+pkgdesc="A c transpiler focused on security"
+url="https://github.com/fryedbiscuit/dwm"
+arch=('i686' 'x86_64' 'arm' 'armv7h' 'armv6h' 'aarch64')
+license=('MIT')
+# options=(zipman)
+depends=()
+makedepends=('git' 'make' 'clang')
+source=(git+https://github.com/fryedbiscuit/prism.git#branch=main)
+sha256sums=('SKIP')
+
+pkgver() {
+	printf "r%s.%s" "$(git rev-list --count HEAD)" "$(git rev-parse --short HEAD)"
+}
+
+build() {
+	cd prism
+	cc prism.c -flto -s -O3 -o prism
+}
+
+package() {
+	cd prism
+	install -d $pkgdir$PREFIX/bin
+	install prism $pkgdir$PREFIX/bin/prism -m 755 
+}

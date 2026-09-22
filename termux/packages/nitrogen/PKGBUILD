@@ -1,0 +1,27 @@
+pkgname=nitrogen
+pkgver=r6.514f0f1
+pkgrel=1
+pkgdesc="Lighweigth wallpapersetter in gtk2"
+url="https://github.com/l3ib/nitrogen"
+arch=('i686' 'x86_64' 'arm' 'armv7h' 'armv6h' 'aarch64')
+depends=('gtkmm2')
+makedepends=('git' 'make')
+source=(git+https://github.com/l3ib/nitrogen#branch=master)
+sha256sums=('SKIP')
+
+pkgver() {
+	printf "r%s.%s" "$(git rev-list --count HEAD)" "$(git rev-parse --short HEAD)"
+}
+
+build() {
+	cd nitrogen
+	export CXXFLAGS="-std=c++11 -O2"
+	autoreconf -fi
+	./configure
+	make
+}
+
+package() {
+	install -d ${pkgdir}${PREFIX}/bin
+	install -m 755 nitrogen/src/nitrogen ${pkgdir}${PREFIX}/bin/nitrogen
+}

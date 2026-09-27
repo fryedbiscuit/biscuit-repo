@@ -1,0 +1,31 @@
+pkgname=nsxiv
+pkgver=r11.3643acf
+pkgrel=1
+pkgdesc="Up-to-date fork of the simple X image viewer"
+url="https://nsxiv.codeberg.page/"
+arch=('i686' 'x86_64' 'arm' 'armv7h' 'armv6h' 'aarch64')
+license=('MIT')
+# options=(zipman)
+depends=('libx11' 'libxinerama' 'libxft' 'freetype')
+makedepends=('clang' 'git' 'make')
+provides=('st')
+conflicts=('st')
+source=(git+https://codeberg.org/nsxiv/nsxiv.git#branch=master)
+sha256sums=('SKIP')
+
+
+pkgver() {
+	printf "r%s.%s" "$(git rev-list --count HEAD)" "$(git rev-parse --short HEAD)"
+}
+
+build() {
+	cp ../fix.diff $pkgname
+	cd $pkgname
+	git apply fix.diff
+	CC=clang make
+}
+
+package() {
+	cd $pkgname
+	make PREFIX="${PREFIX:-/usr}" DESTDIR="$pkgdir" install
+}

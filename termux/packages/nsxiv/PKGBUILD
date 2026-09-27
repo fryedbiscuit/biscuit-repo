@@ -1,5 +1,5 @@
 pkgname=nsxiv
-pkgver=r11.3643acf
+pkgver=r12.1818fcf
 pkgrel=1
 pkgdesc="Up-to-date fork of the simple X image viewer"
 url="https://nsxiv.codeberg.page/"
@@ -8,8 +8,8 @@ license=('MIT')
 # options=(zipman)
 depends=('libx11' 'libxinerama' 'libxft' 'freetype')
 makedepends=('clang' 'git' 'make')
-provides=('st')
-conflicts=('st')
+provides=('sxiv')
+conflicts=('sxiv')
 source=(git+https://codeberg.org/nsxiv/nsxiv.git#branch=master)
 sha256sums=('SKIP')
 
@@ -28,4 +28,6 @@ build() {
 package() {
 	cd $pkgname
 	make PREFIX="${PREFIX:-/usr}" DESTDIR="$pkgdir" install
+	cd $pkgdir$PREFIX/bin
+	ln -s nsxiv sxiv
 }

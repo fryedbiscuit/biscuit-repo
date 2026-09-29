@@ -22,10 +22,12 @@ package() {
     local _prefix="${PREFIX:-/usr}"
     
     install -d "${pkgdir}${_prefix}/opt/c3"
+    install -d "${pkgdir}${_prefix}/etc/profile.d"
     install -d "${pkgdir}${_prefix}/bin"
     
     # The tarball extracts a single 'c3' root directory containing the binary and stdlib
     cp -a "${srcdir}/c3/"* "${pkgdir}${_prefix}/opt/c3/"
+	install -m755 ../10-c3c.sh ${pkgdir}${_prefix}/etc/profile.d
     
     chmod +x "${pkgdir}${_prefix}/opt/c3/c3c"
     ln -s "${_prefix}/opt/c3/c3c" "${pkgdir}${_prefix}/opt/c3c"
